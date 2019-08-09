@@ -1,0 +1,11 @@
+{
+  "port": 8001,
+  "host": "0.0.0.0",
+  "serveDir": "build",
+  "watchexps": [
+    "build/**/*.js # echo js # reload",
+    "build/**/*.html # echo html # reload",
+    "build/css/*.css # echo css # reloadcss"
+  ],
+  "quiet": false
+}
