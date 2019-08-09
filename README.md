@@ -1,3 +1,3 @@
-## fast small Preact starter with buble and rollup
+# Simple note app
 
-A simple boilerplate for web apps with Preact
+A simple opinionated notetaking app for a website
