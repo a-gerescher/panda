@@ -1,4 +1,4 @@
 node_modules/
 build/bundle.js
 build/bundle.esm.js
-build/css/styles.css
+build/css/style.css
