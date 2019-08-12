@@ -1,4 +1,15 @@
 body {
-  background: #fff;
-  font-size: 20px;
+  background: #333;
+  font: 12px Verdana;
+  color: #999;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar{
+  float: left;
+  border-right: 1px solid #222;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 300px;
 }

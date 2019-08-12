@@ -1,13 +1,13 @@
-import './styles.scss';
+import "./styles.scss";
 
-const { h, render } = window.preact;
+import { Sidebar } from "./components/sidebar";
+import { h, render, Fragment } from "./imports";
 
-const App = () => {
-  return (
-    <div>
-      <span>Hello, world6! I beat the bundler</span>
-    </div>
-  );
-};
+const App = () => (
+  <Fragment>
+    <Sidebar />
+    <span>Hello, world6! I beat the bundler</span>
+  </Fragment>
+);
 
 render(<App />, document.getElementById("demo"));
