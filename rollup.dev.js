@@ -9,19 +9,68 @@ import livereload from 'rollup-plugin-livereload';
 import sass from 'rollup-plugin-sass';
 
 const isProduction = process.env.NODE_ENV === 'production';
+const bundleType = process.env.mod || 'iife';
+let terserConfig = {};
+let outputs = [];
+
+let iife = {
+  file: 'build/bundle.js',
+  format: 'iife',
+  globals: { "window.preact": "preact" }
+}
+
+let esm = {
+  file: 'build/bundle.esm.js',
+  format: 'esm'
+}
+
+if(isProduction){
+  terserConfig = {
+    toplevel: true,
+    compress: {
+      warnings: false
+    },
+    mangle: {
+      toplevel: true,
+      properties: { regex: /^_/ }
+    },
+    output: {
+      comments: false
+    },
+    sourcemap: false
+  }
+
+  if(bundleType === "iife") {
+    outputs.push(iife)
+  }
+
+  if(bundleType === "esm") {
+    outputs.push(esm);
+    terserConfig.compress.ecma = 6;
+    terserConfig.compress.unsafe_arrows = true;
+    terserConfig.output.ecma = 6;
+  }
+} else {
+  outputs = [iife,esm];
+  terserConfig = {
+    compress: {
+      warnings: false
+    },
+    mangle: {
+      properties: { regex: /^_/ }
+    },
+    output: {
+      comments: false
+    },
+    sourcemap: false
+  }
+}
 
 export default {
   input: 'src/app.js',
-  output: [{
-    file: 'build/bundle.js',
-    format: 'iife'
-  },{
-    file: 'build/bundle.esm.js',
-    format: 'esm'
-  }],
+  output: outputs,
   external: ['preact'],
   treeshake: isProduction,
- 
   onwarn: (warning)=>{
     const ignoredCircular = [
       'preact',
@@ -46,35 +95,20 @@ export default {
     commonjs({
       include: 'node_modules/**',
       namedExports: {
-        'node_modules/preact/dist/preact.js': ['h', 'render', 'Component', 'cloneElement', 'options'],
+        'node_modules/preact/src/component': ['Component'],
+        'node_modules/preact/src/render': ['render'],
+        'node_modules/preact/src/create-element': ['createElement','Fragment'],
       },
     }),
     replace({ 'process.env.NODE_ENV': JSON.stringify('development') }),
-    isProduction && terser({
-      toplevel: true,
-      compress: {
-        passes: 3,
-        //ecma: 6,
-        //unsafe_arrows: true,
-        warnings: false
-      },
-      mangle: {
-        toplevel: true,
-        properties: { regex: /^_/ }
-      },
-      output: {
-        //ecma: 6,
-        comments: false
-      },
-      sourcemap: false
-    }),
+    terser(terserConfig),
     !isProduction && serve({
       // Multiple folders to serve from
       contentBase: ['build'],
-    
+
       // Path to fallback page
       historyApiFallback: '/index.html',
-    
+
       // Options used in setting up server
       host: 'localhost',
       port: 8001

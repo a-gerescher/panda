@@ -4,7 +4,7 @@
   "description": "A simple opinionated notetaking app",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c rollup.dev.js --environment NODE_ENV:production",
+    "build": "rollup -c rollup.dev.js --environment NODE_ENV:production --environment mod:iife && rollup -c rollup.dev.js --environment NODE_ENV:production --environment mod:esm",
     "dev": "rollup -c rollup.dev.js --watch",
     "serve": "sirv start build --port 8001"
   },
