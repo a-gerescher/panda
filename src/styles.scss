@@ -1,15 +1,62 @@
+$dark-color: #222;
+$font-color: #999;
+
+$dark-border: 1px solid $dark-color;
+$sidebar-width: 300px;
+
+@mixin dark-border {
+  border-color: $dark-color;
+  border-type: solid;
+}
+
 body {
   background: #333;
   font: 12px Verdana;
-  color: #999;
+  color: $font-color;
   padding: 0;
   margin: 0;
 }
 
 .sidebar{
   float: left;
-  border-right: 1px solid #222;
+  border-right: $dark-border;
   box-sizing: border-box;
   height: 100vh;
-  width: 300px;
+  width: $sidebar-width;
+}
+
+.search{
+  width: 100%;
+  border-bottom: $dark-border;
+  box-sizing: border-box;
+  padding: 0.4em;
+}
+
+.searchinput{
+  outline: none;
+  border: $dark-border;
+  background-color: #2A2A2A;
+  padding: 0.4em;
+  width: calc( 100% - 0.8em - 2px );
+  color: $font-color;
+}
+
+.Editor{
+  margin-left: $sidebar-width;
+  width: calc(100vw - $sidebar-width - 0.4em);
+  height: 50vh;
+  .content{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    outline: none;
+    padding: 0.4em;
+  }
+}
+
+.Preview{
+  border-top: $dark-border;
+  margin-left: $sidebar-width;
+  width: calc(100vw - $sidebar-width);
+  height: calc(50vh - 1px);
 }

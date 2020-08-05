@@ -1,3 +1,5 @@
-//export { Component } from 'preact/src/component';
-export { render } from 'preact/src/render';
-export { createElement as h, Fragment } from 'preact/src/create-element'
+import { h, render, Fragment } from 'preact';
+import { useState, useEffect, useCallback, useRef } from 'preact/hooks';
+const c = l => ({ class: l });
+const d = 'div';
+export { h, render, Fragment, useState, useEffect, useCallback, useRef, c, d };

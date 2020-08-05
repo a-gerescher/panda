@@ -4,87 +4,39 @@
   "description": "A simple opinionated notetaking app",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c rollup.dev.js --environment NODE_ENV:production --environment mod:iife && rollup -c rollup.dev.js --environment NODE_ENV:production --environment mod:esm",
-    "dev": "rollup -c rollup.dev.js --watch",
-    "serve": "sirv start build --port 8001"
+    "build-old": "rollup -c --environment NODE_ENV:production --environment mod:iife && rollup -c --environment NODE_ENV:production --environment mod:esm",
+    "build": "rollup -c --environment NODE_ENV:production",
+    "watch": "rollup -c --watch",
+    "dev": "run-p -rlsn --npm-path yarn watch serve",
+    "serve": "servor build index.html 8082 --reload"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint-config-developit": "^1.1.1",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-config-standard": "^13.0.1",
-    "eslint-config-standard-preact": "^1.1.6",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-standard": "^4.0.0",
-    "preact": "^10.0.0-rc.1",
-    "prettier": "^1.18.2",
-    "rollup": "^1.19.3",
-    "rollup-plugin-buble": "^0.19.8",
-    "rollup-plugin-commonjs": "^10.0.2",
-    "rollup-plugin-livereload": "^1.0.1",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-sass": "^1.2.2",
-    "rollup-plugin-serve": "^1.0.1",
-    "rollup-plugin-terser": "^5.1.1"
+    "@rollup/plugin-html": "^0.2.0",
+    "@rollup/plugin-node-resolve": "^8.0.1",
+    "cp-file": "^9.0.0",
+    "esbuild": "^0.6.16",
+    "fdir": "^3.4.2",
+    "pify": "^5.0.0",
+    "preact": "^10.4.4",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.23.0",
+    "rollup-plugin-esbuild": "^2.4.2",
+    "sass": "^1.26.5",
+    "terser": "^5.0.0"
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "plugins": [
-      "prettier"
-    ],
-    "extends": [
-      "standard",
-      "standard-preact",
-      "eslint-config-developit",
-      "eslint:recommended",
-      "prettier",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "semi": [
-        2,
-        "always"
-      ],
-      "indent": [
-        "warn",
-        2
-      ],
-      "arrow-body-style": [
-        "error",
-        "as-needed",
-        {
-          "requireReturnForObjectLiteral": true
-        }
-      ],
-      "no-useless-catch": 0,
-      "no-misleading-character-class": 0,
-      "no-async-promise-executor": 0,
-      "react/jsx-indent": [
-        "warn",
-        2
-      ],
-      "react/jsx-indent-props": [
-        "warn",
-        2
-      ],
-      "prettier/prettier": "warn"
-    },
-    "env": {
-      "browser": true
-    }
+  "eslintIgnore": [
+    "package.json",
+    "rollup.*.js",
+    "build/**/*.js",
+    "src/preact.min.js"
+  ],
+  "snowpack": {
+    "webDependencies": [
+      "preact",
+      "preact/hooks"
+    ]
   }
 }
