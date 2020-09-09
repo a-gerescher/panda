@@ -1,4 +1,4 @@
-import fdir from 'fdir';
+import { fdir } from 'fdir';
 import path from 'path';
 import picomatch from 'picomatch';
 

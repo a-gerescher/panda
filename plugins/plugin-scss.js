@@ -1,7 +1,6 @@
 import { existsSync, mkdirSync, writeFile } from 'fs';
 import { dirname } from 'path';
 import { createFilter } from '@rollup/pluginutils';
-
 export default function css (options = {}) {
   const filter = createFilter(options.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], options.exclude);
   let dest = options.output;
@@ -16,16 +15,21 @@ export default function css (options = {}) {
     if (scss.length) {
       includePaths = includePaths.filter((v, i, a) => a.indexOf(v) === i);
       try {
-        const sass = options.sass || require('sass');
-        const css = sass.renderSync(Object.assign({
+        const preferredSass = require('sass');
+        const sass = options.sass || preferredSass;
+        const result = sass.renderSync(Object.assign({
           data: prefix + scss,
           includePaths
-        }, options)).css.toString();
+        }, options));
         // Possibly process CSS (e.g. by PostCSS)
         if (typeof options.processor === 'function') {
-          return options.processor(css, styles);
+          return options.processor(result.css.toString(), styles);
         }
-        return css;
+        const preparedResult = { css: result.css.toString() };
+        if (result.map){
+          preparedResult.map = result.map.toString();
+        }
+        return preparedResult;
       } catch (e) {
         if (options.failOnError) {
           throw e;
@@ -68,11 +72,10 @@ export default function css (options = {}) {
 
       // When output is disabled, the stylesheet is exported as a string
       if (options.output === false) {
-        const css = compileToCSS(code);
-        return {
-          code: 'export default ' + JSON.stringify(css),
+        return Promise.resolve(compileToCSS(code)).then(scss => ({
+          code: 'export default ' + JSON.stringify(scss.css),
           map: { mappings: '' }
-        };
+        }));
       }
 
       // Map of every stylesheet
@@ -80,7 +83,15 @@ export default function css (options = {}) {
 
       return '';
     },
-    generateBundle (opts) {
+    generateBundle (opts, bundle) {
+
+      for (const bundleKey of Object.keys(bundle)) {
+        const bundleItem = bundle[bundleKey];
+        if (Object.keys(bundleItem.modules).find((mod) => filter(mod))){
+          delete bundle[bundleKey];
+        }
+      }
+
       // No stylesheet needed
       if (options.output === false) {
         return;
@@ -92,10 +103,10 @@ export default function css (options = {}) {
         scss += styles[id] || '';
       }
 
-      const css = compileToCSS(scss);
+      const res = compileToCSS(scss);
 
-      // Resolve if porcessor returned a Promise
-      Promise.resolve(css).then(css => {
+      // Resolve if processor returned a Promise
+      Promise.resolve(res).then(({ css,map }) => {
         // Emit styles through callback
         if (typeof options.output === 'function') {
           options.output(css, styles);
@@ -133,6 +144,7 @@ export default function css (options = {}) {
             }
           }
         });
+        return;
       });
     }
   };

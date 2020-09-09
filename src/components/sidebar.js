@@ -1,4 +1,4 @@
-import { h, useState, c } from "../imports.js";
+import { h, useState, c, d as Part } from '../imports.js';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -12,16 +12,16 @@ const useInputValue = initialValue => {
 };
 
 const Searchfield = search => (
-  <div {...c('search')}>
+  <Part {...c('search')}>
     <input {...c('searchinput')} type="text" placeholder="Suchen" {...search} />
-  </div>
+  </Part>
 );
 export const Sidebar = () => {
   let search = useInputValue();
   return (
-    <div {...c('sidebar')} >
+    <Part {...c('sidebar')} >
       <Searchfield {...search} />
       {search.value}
-    </div>
+    </Part>
   );
 };

@@ -8,24 +8,25 @@
     "build": "rollup -c --environment NODE_ENV:production",
     "watch": "rollup -c --watch",
     "dev": "run-p -rlsn --npm-path yarn watch serve",
-    "serve": "servor build index.html 8082 --reload"
+    "serve": "servor build index.html 8083 --reload"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-html": "^0.2.0",
-    "@rollup/plugin-node-resolve": "^8.0.1",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "cp-file": "^9.0.0",
-    "esbuild": "^0.6.16",
-    "fdir": "^3.4.2",
+    "esbuild": "^0.6.32",
+    "fdir": "^4.1.0",
     "pify": "^5.0.0",
-    "preact": "^10.4.4",
+    "preact": "^10.4.8",
     "rimraf": "^3.0.2",
-    "rollup": "^2.23.0",
-    "rollup-plugin-esbuild": "^2.4.2",
-    "sass": "^1.26.5",
-    "terser": "^5.0.0"
+    "rollup": "^2.26.11",
+    "rollup-plugin-esbuild": "^2.5.0",
+    "sass": "^1.26.10",
+    "terser": "^5.3.0"
   },
   "eslintIgnore": [
     "package.json",
@@ -38,5 +39,9 @@
       "preact",
       "preact/hooks"
     ]
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "state-local": "^1.0.1"
   }
 }

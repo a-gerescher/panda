@@ -43,20 +43,35 @@ body {
 
 .Editor{
   margin-left: $sidebar-width;
-  width: calc(100vw - $sidebar-width - 0.4em);
-  height: 50vh;
+  width: calc(100vw - #{$sidebar-width});
+  height: 100vh;
   .content{
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     outline: none;
-    padding: 0.4em;
   }
 }
 
 .Preview{
   border-top: $dark-border;
   margin-left: $sidebar-width;
-  width: calc(100vw - $sidebar-width);
+  width: calc(100vw - #{$sidebar-width});
   height: calc(50vh - 1px);
+}
+
+.monaco-editor .parameter-hints-widget {
+  border: 0px;
+}
+.monaco-editor .parameter-hints-widget .signature {
+  padding: 0px;
+}
+.monaco-editor .suggest-widget {
+  border: 0px;
+}
+.monaco-editor.vs-dark .suggest-widget {
+  border: 0px;
+}
+.monaco-editor .rename-box {
+  top: 0;
 }

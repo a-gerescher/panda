@@ -3,6 +3,7 @@
 import copy from './plugins/plugin-cpydir';
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import { terser } from './plugins/plugin-terser';
 import cleaner from './plugins/plugin-cleaner';
 import html from '@rollup/plugin-html';
@@ -24,19 +25,20 @@ let terserConfig = {
     "comments": false
   },
   "toplevel": true,
-  "ecma": 2017
+  "ecma": 2018
 };
 
 
 let input = ['src/app.js','src/styles.scss'];
 
 let esm = {
-  dir: 'build/dsp',
+  dir: 'build',
   format: 'esm',
   hoistTransitiveImports: true,
   interop: true,
   paths: {
     'preact': './preact.js',
+    'preact/compat': './compat.js',
     'preact/hooks': './hooks.js'
   },
   manualChunks: (id) => {
@@ -60,7 +62,9 @@ let externals = ['preact','preact/hooks'];
 if(isProduction){
   input.push(
     'web_modules/preact.js',
-    'web_modules/hooks.js'
+    'web_modules/compat.js',
+    'web_modules/hooks.js',
+    'src/editor/editor.js'
   );
 }
 
@@ -105,7 +109,8 @@ export default {
     console.warn(warning.message)
   },
   watch: {
-    include: 'src/**'
+    include: ['src/**/*'],
+    clearScreen: false
   },
   plugins: [
     isProduction && cleaner({
@@ -120,7 +125,7 @@ export default {
     }),
     esbuild({
       include: 'src/**/*.js',
-      target: 'es2017',
+      target: 'es2018',
       watch: process.argv.includes('--watch') || process.argv.includes('-w'),
       jsxFactory: 'h',
       jsxFragment: 'Fragment',
@@ -128,6 +133,7 @@ export default {
         '.js': 'jsx'
       }
     }),
+    commonjs({}),
     copy(copyFiles),
 
     isProduction && terser(terserConfig),
