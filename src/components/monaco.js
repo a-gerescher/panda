@@ -1,17 +1,19 @@
 
-import { h, render, Fragment, c, d as Part, useState, useRef } from '../imports';
-import { Editor } from '../editor/editor';
+import { h, render, Fragment, c, d as Part, useState, useRef, useEffect, useCallback } from '../imports';
+import { Editor } from '../editor/ControlledEditor';
 
-const MonacoEditor = () => {
-  const [text, setText] = useState('# Title\n\nWrite a new chapter.');
+const MonacoEditor = ({ text,setText }) => {
   const [options, setOptions] = useState({
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
     renderLineHighlight: 'none',
     selectOnLineNumbers: true,
-    automaticLayout: true
+    automaticLayout: true,
+    wordWrap: 'bounded'
   });
   const [language] = useState('markdown');
+
+  const [changeTimeout,setChangeTimeout] = useState(false);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const editorRef = useRef();
 
@@ -22,6 +24,21 @@ const MonacoEditor = () => {
     // in this component whenever you want
   }
 
+  const debounce = useCallback(
+    () => {
+
+      clearTimeout(changeTimeout);
+      setChangeTimeout(setTimeout(() => {
+        setText(editorRef.current.getValue());
+      }, 50));
+    },
+    [changeTimeout]
+  );
+
+  // const handleEditorChange = useCallback((event,value) => {
+  //   setText(editorRef.current.getValue());
+  // }, [isEditorReady]);
+
   return (
     <Editor
       height="calc( 100vh )"
@@ -29,6 +46,7 @@ const MonacoEditor = () => {
       language={language}
       value={text}
       options={options}
+      onChange={debounce}
       editorDidMount={handleEditorDidMount}
     />
   );

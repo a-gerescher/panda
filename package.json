@@ -8,7 +8,7 @@
     "build": "rollup -c --environment NODE_ENV:production",
     "watch": "rollup -c --watch",
     "dev": "run-p -rlsn --npm-path yarn watch serve",
-    "serve": "servor build index.html 8083 --reload"
+    "serve": "servor build index.html 8084 --reload"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +41,7 @@
     ]
   },
   "dependencies": {
+    "marked": "^1.1.1",
     "prop-types": "^15.7.2",
     "state-local": "^1.0.1"
   }

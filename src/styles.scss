@@ -1,4 +1,4 @@
-$dark-color: #222;
+$dark-color: #1d1d1d;
 $font-color: #999;
 
 $dark-border: 1px solid $dark-color;
@@ -46,10 +46,21 @@ body {
   width: calc(100vw - #{$sidebar-width});
   height: 100vh;
   .content{
-    width: 100%;
+    width: calc(calc(100vw - #{$sidebar-width}) / 2);
     height: 100%;
     box-sizing: border-box;
+    display: inline-block;
     outline: none;
+  }
+  .viewer{
+    width:  calc(calc(100vw - #{$sidebar-width}) / 2);
+    height: 100%;
+    border-left: $dark-border;
+    display: inline-block;
+    box-sizing: border-box;
+    outline: none;
+    float: right;
+    padding: 0 2em;
   }
 }
 

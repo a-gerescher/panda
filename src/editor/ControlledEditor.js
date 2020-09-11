@@ -1,7 +1,6 @@
 import { h, useRef, useEffect, useCallback } from '../imports';
-import PropTypes from 'prop-types';
 
-import Editor from './Editor';
+import Editor from './editor';
 import { noop } from './utils';
 
 function ControlledEditor({ value: providedValue, onChange, editorDidMount, ...props }) {
@@ -53,15 +52,9 @@ function ControlledEditor({ value: providedValue, onChange, editorDidMount, ...p
   );
 }
 
-ControlledEditor.propTypes = {
-  value: PropTypes.string,
-  editorDidMount: PropTypes.func,
-  onChange: PropTypes.func
-};
-
 ControlledEditor.defaultProps = {
   editorDidMount: noop,
   onChange: noop
 };
 
-export default ControlledEditor;
+export { ControlledEditor as Editor };
