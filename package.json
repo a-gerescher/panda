@@ -41,7 +41,7 @@
     ]
   },
   "dependencies": {
-    "marked": "^1.1.1",
+    "marked": "^2.0.0",
     "prop-types": "^15.7.2",
     "state-local": "^1.0.1"
   }
