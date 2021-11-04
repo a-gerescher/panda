@@ -1,9 +1,8 @@
 // Rollup plugins
 
 import copy from './plugins/plugin-cpydir';
-import esbuild from './plugin/plugin-esbuild';
+import { esbuild } from './plugins/plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 import { terser } from './plugins/plugin-terser';
 import cleaner from './plugins/plugin-cleaner';
 import { html, makeHtmlAttributes } from './plugins/plugin-html';
@@ -23,7 +22,7 @@ let terserConfig = {
     "comments": false
   },
   "toplevel": true,
-  "ecma": 2018
+  "ecma": 2020
 };
 
 
@@ -57,7 +56,7 @@ let esm = {
 
 let externals = ['preact','preact/hooks'];
 
-if(isProduction){
+if(!isProduction){
   input.push(
     'web_modules/preact.js',
     'web_modules/compat.js',
@@ -124,12 +123,9 @@ export default {
     esbuild({
       include: 'src/**/*.js',
       target: 'es2018',
-      watch: process.argv.includes('--watch') || process.argv.includes('-w'),
       jsxFactory: 'h',
       jsxFragment: 'Fragment',
-      loaders: {
-        '.js': 'jsx'
-      }
+      loader: 'jsx'
     }),
     copy(copyFiles),
 

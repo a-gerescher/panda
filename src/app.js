@@ -1,13 +1,14 @@
 import { Sidebar } from './components/sidebar';
 import { h, render, Fragment, c, d as Part, useState, useRef, useEffect } from './imports';
 import { MonacoEditor } from './components/monaco';
-import marked from 'marked';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 const MarkdownViewer = ({ text }) => {
   const [html, setHtml] = useState(text);
 
   useEffect(() => {
-    setHtml(marked(text));
+    setHtml(DOMPurify.sanitize(marked(text)));
   }, [text]);
 
   return (

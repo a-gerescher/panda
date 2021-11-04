@@ -4,7 +4,7 @@ const path = require('path');
 const { transform } = require('esbuild');
 const { createFilter } = require('@rollup/pluginutils');
 
-module.exports = function sucrase(opts = {}) {
+function esbuild(opts = {}) {
   const filter = createFilter(opts.include, opts.exclude);
 
   return {
@@ -28,19 +28,18 @@ module.exports = function sucrase(opts = {}) {
       }
     },
 
-    transform(code, id) {
+    transform: async (code, id) => {
       if (!filter(id)) return null;
 
       const result = await transform(code, {
-        jsxFactory: opts.jsxPragma,
-        jsxFragment: opts.jsxFragmentPragma,
+        jsxFactory: opts.jsxFactory,
+        jsxFragment: opts.jsxFragment,
         minifyIdentifiers: true,
         minifySyntax: true,
         sourcemap: opts.sourceMap || false,
         target: opts.target,
         format: 'esm',
-        watch: opts.watch,
-        loader: opts.loaders
+        loader: opts.loader
       });
       return {
         code: result.code,
@@ -49,3 +48,5 @@ module.exports = function sucrase(opts = {}) {
     }
   };
 };
+
+export { esbuild }
