@@ -1,6 +1,6 @@
 
 import { h, render, Fragment, c, d as Part, useState, useRef, useEffect, useCallback } from '../imports';
-import { Editor } from '../editor/ControlledEditor';
+import { Editor } from '../editor/editor';
 
 const MonacoEditor = ({ text,setText }) => {
   const [options, setOptions] = useState({
@@ -14,11 +14,9 @@ const MonacoEditor = ({ text,setText }) => {
   const [language] = useState('markdown');
 
   const [changeTimeout,setChangeTimeout] = useState(false);
-  const [isEditorReady, setIsEditorReady] = useState(false);
   const editorRef = useRef();
 
-  function handleEditorDidMount(_, editor) {
-    setIsEditorReady(true);
+  function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
     // Now you can use the instance of monaco editor
     // in this component whenever you want
@@ -47,7 +45,7 @@ const MonacoEditor = ({ text,setText }) => {
       value={text}
       options={options}
       onChange={debounce}
-      editorDidMount={handleEditorDidMount}
+      onMount={handleEditorDidMount}
     />
   );
 };

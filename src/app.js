@@ -27,13 +27,13 @@ const ContentViewer = ({ text,setText }) => {
 const App = () => {
   const [text, setText] = useState('# Title\n\nWrite a new chapter.');
   return (
-    <Part>
+    <Fragment>
       <Sidebar />
       <Part {...c('Editor')}>
         <ContentViewer {...{ text,setText }} />
         <MarkdownViewer {...{ text }} />
       </Part>
-    </Part>
+    </Fragment>
   );
 };
 

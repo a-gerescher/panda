@@ -5,8 +5,5 @@ import { memo } from '../imports';
 
 const Editor = memo(DefaultEditor);
 
-import ControlledEditor from './ControlledEditor';
 
-import { monaco } from './utils';
-
-export { ControlledEditor, monaco, Editor, themes };
+export { Editor, themes };

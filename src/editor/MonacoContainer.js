@@ -8,7 +8,9 @@ const loadingStyles = {
 };
 
 function Loading({ content }) {
-  return <div style={loadingStyles}>{content}</div>;
+  return (
+    <div style={loadingStyles}>{content}</div>
+  );
 }
 
 const styles = {
@@ -35,16 +37,19 @@ const MonacoContainer = ({
   loading,
   _ref,
   className,
-  wrapperClassName
-}) => (
-  <section style={{ ...styles.wrapper, width, height }} className={wrapperClassName}>
-    {!isEditorReady && <Loading content={loading} />}
-    <div
-      ref={_ref}
-      style={{ ...styles.fullWidth, ...!isEditorReady && styles.hide }}
-      className={className}
-    />
-  </section>
-);
+  wrapperProps,
+}) => {
+  return (
+    <section style={{ ...styles.wrapper, width, height }} {...wrapperProps}>
+      {!isEditorReady && <Loading content={loading} />}
+      <div
+        ref={_ref}
+        style={{ ...styles.fullWidth, ...(!isEditorReady && styles.hide) }}
+        className={className}
+      />
+    </section>
+  );
+}
+
 
 export default MonacoContainer;
