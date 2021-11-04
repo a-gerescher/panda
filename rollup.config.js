@@ -1,15 +1,13 @@
 // Rollup plugins
 
 import copy from './plugins/plugin-cpydir';
-import esbuild from 'rollup-plugin-esbuild';
+import esbuild from './plugin/plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { terser } from './plugins/plugin-terser';
 import cleaner from './plugins/plugin-cleaner';
-import html from '@rollup/plugin-html';
+import { html, makeHtmlAttributes } from './plugins/plugin-html';
 import scss from './plugins/plugin-scss';
-import sass from 'sass';
-
 
 const isProduction = process.env.NODE_ENV === 'production';
 let terserConfig = {
@@ -73,7 +71,7 @@ const template = ({ attributes, files, publicPath }) => {
   const scripts = (files.js || [])
         .map(({ code, fileName }) => {
           if( code === '\n') return null;
-          return `<script src="${publicPath}${fileName}" ${html.makeHtmlAttributes(attributes.script).trim()}></script>`;
+          return `<script src="${publicPath}${fileName}" ${makeHtmlAttributes(attributes.script).trim()}></script>`;
         })
         .join('')
   return `<!doctype html><html><head><meta charset="utf-8"><meta name=viewport content="width=device-width, initial-scale=1"><title>Panda</title><base href="/"><link rel="stylesheet" href="${isProduction ? 'layout.css':'./layout.css'}"></head><body><div id="demo"></div>${scripts}</body></html>`
@@ -133,14 +131,12 @@ export default {
         '.js': 'jsx'
       }
     }),
-    commonjs({}),
     copy(copyFiles),
 
     isProduction && terser(terserConfig),
     scss({
       output: esm.dir + '/layout.css',
       outputStyle: 'compressed',
-      sass: sass,
       watch: 'src/styles.scss'
     }),
     html({
